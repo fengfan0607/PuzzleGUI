@@ -1,64 +1,56 @@
 package Model;
 
+import java.util.Arrays;
 import java.util.Observable;
 
 import common.Data;
 
 public class Driver extends Observable implements Data {
-
-	private int[] perferDayOff;
-	private int[] perferWorkShift;
-	private int[] daysOff;
-	private String driverName;
-	private int[] lines;
-	private int[][] plan;
-
-	public int[][] getPlan() {
-		return plan;
+	private String name;
+	private int[] prePlan;
+	private int[] postPlan;
+	public int[] getPrePlan() {
+		return prePlan;
 	}
-
-	public void setPlan(int[][] plan) {
-		this.plan = plan;
+	public String getName() {
+		return name;
 	}
-
-	public int[] getLines() {
-		return lines;
+	public void setName(String name) {
+		this.name = name;
 	}
-
-	public void setLines(int[] lines) {
-		this.lines = lines;
+	public void setPrePlan(int[] prePlan) {
+		this.prePlan = prePlan;
 	}
-
-	public String getDriverName() {
-		return driverName;
+	
+	public void setPrePlanAtPosition(int i,int value){
+		prePlan[i] = value;
+		System.err.println("changed");
+		setChanged();
+		notifyObservers();
 	}
-
-	public void setDriverName(String driverName) {
-		this.driverName = driverName;
+	
+	public int getPrePlanAtPosition(int i){
+		return prePlan[i];
 	}
-
-	public int[] getPerferDayOff() {
-		return perferDayOff;
+	public int[] getPostPlan() {
+		return postPlan;
 	}
-
-	public void setPerferDayOff(int[] perferDayOff) {
-		this.perferDayOff = perferDayOff;
+	public Driver(String name, int[] prePlan, int[] postPlan) {
+		super();
+		this.name = name;
+		this.prePlan = prePlan;
+		this.postPlan = postPlan;
 	}
-
-	public int[] getPerferWorkShift() {
-		return perferWorkShift;
+	public void setPostPlan(int[] postPlan) {
+		this.postPlan = postPlan;
 	}
-
-	public void setPerferWorkShift(int[] perferWorkShift) {
-		this.perferWorkShift = perferWorkShift;
+	public Driver(int[] prePlan, int[] postPlan) {
+		super();
+		this.prePlan = prePlan;
+		this.postPlan = postPlan;
 	}
-
-	public int[] getDaysOff() {
-		return daysOff;
-	}
-
-	public void setDaysOff(int[] daysOff) {
-		this.daysOff = daysOff;
+	public String toString(){
+		return "driver " + name +" :  "+ Arrays.toString(prePlan);
 	}
 
 }
