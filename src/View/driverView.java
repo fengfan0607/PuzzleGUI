@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -16,44 +17,62 @@ import javax.swing.border.MatteBorder;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 
+import Components.ColumnGroup;
+import Components.GroupableTableHeader;
+import Components.GroupableTableHeaderUI;
 import Components.MyTableModel;
-import Components.myJTable;
+import Components.TablePopUpMenu;
 import common.Data;
 
 public class driverView extends JPanel implements Data{
 	JTable table;
 	MyTableModel tableModel;
+	TablePopUpMenu popUpMenu;
 	public driverView() {		
-		super(new GridLayout(1, 0));
-		table = new JTable();
+	super(new GridLayout(1, 0));
+		table = new JTable(){  protected JTableHeader createDefaultTableHeader() {
+			  return new GroupableTableHeader(columnModel);
+	      }
+	    };	
 		tableModel = new MyTableModel();
 		table.setModel(tableModel);
-		table.setPreferredScrollableViewportSize(new Dimension(500, 70));
 		table.setFillsViewportHeight(true);
 		Color color = UIManager.getColor("Table.gridColor");
 		MatteBorder border = new MatteBorder(1, 1, 0, 0, color);
 		table.setBorder(border);
 		table.setDefaultRenderer(Object.class, new BorderColorRenderer());
-		String[] columnNames = new String[numOfShifts];
-		for (int i = 0; i < numOfShifts; i++) {
-			String string = "Day" + ((i + 2) / 2) + ":" + (i + 1);
-			columnNames[i] = string;
-		}		
+		insertData();
+		groupHeader();
+		popUpMenu = new TablePopUpMenu();
+		table.setComponentPopupMenu(popUpMenu);
+		JScrollPane scrollPane = new JScrollPane(table);
+		this.add(scrollPane);
+	}
+	
+	public TablePopUpMenu getPopUpMenu() {
+		return popUpMenu;
+	}
+
+	public void setPopUpMenu(TablePopUpMenu popUpMenu) {
+		this.popUpMenu = popUpMenu;
+	}
+
+	public void insertData(){
 		for (int i = 0; i < numOfDrivers; i++) {
-			Object[] values = new Object[numOfDays + 1];
-			for (int j = 0; j <= numOfDays; j++) {
+			Object[] values = new Object[numOfShifts + 1];
+			for (int j = 0; j <= numOfShifts; j++) {
 				if (j == 0) {
-					values[j] ="               " + (char) (65 + i);
+					values[j] ="          " + (char) (65 + i);
 				} else {
 					values[j] = "";
 				}
 			}
 			tableModel.insertData(values);
 		}
-//		tableModel.addTableModelListener(new MyTableModelListener(table));
-		JScrollPane scrollPane = new JScrollPane(table);
-		this.add(scrollPane);
 	}
 	public MyTableModel getTableModel() {
 		return tableModel;
@@ -66,6 +85,37 @@ public class driverView extends JPanel implements Data{
 	}
 	public void setTable(JTable table) {
 		this.table = table;
+	}
+	
+	public void groupHeader(){
+	    TableColumnModel cm = table.getColumnModel();
+	    for(int i=0;i<numOfDays;i++){
+	    	ColumnGroup g_day = new ColumnGroup("Day"+ ""+ (i+1));
+	    	g_day.add(cm.getColumn(2*i+1));
+	    	g_day.add(cm.getColumn(2*i+2));
+	 	    GroupableTableHeader header = (GroupableTableHeader) table.getTableHeader();
+	 	    header.addColumnGroup(g_day);
+	    }
+//		TableCellRenderer renderer =  new DefaultTableCellRenderer() {
+//	        public Component getTableCellRendererComponent(JTable table, Object value,
+//	                         boolean isSelected, boolean hasFocus, int row, int column) {
+//	          JTableHeader header = table.getTableHeader();
+//	          if (header != null) {
+//	            setForeground(header.getForeground());
+//	            setBackground(header.getBackground());
+//	            setFont(header.getFont());
+//	          }
+//	          setHorizontalAlignment(JLabel.CENTER);
+//	          setText((value == null) ? "" : value.toString());
+//	          setBorder(UIManager.getBorder("TableHeader.cellBorder"));
+//	          return this;
+//	        }
+//	      };
+//	      TableColumnModel model = table.getColumnModel();
+//	      for (int i=0;i<model.getColumnCount();i++) {
+//	        model.getColumn(i).setHeaderRenderer(renderer);
+//	      }
+	   
 	}
 	class BorderColorRenderer extends DefaultTableCellRenderer {
 

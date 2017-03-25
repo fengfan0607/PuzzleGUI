@@ -22,54 +22,13 @@ public class driverController {
 	}
 	
 	public void control() {
-		tableModelListener = new TableModelListener() {		
-			public void tableChanged(TableModelEvent e) {
-				int firstRow = e.getFirstRow();
-				int lastRow = e.getLastRow();
-				int index = e.getColumn();
-
-				switch (e.getType()) {
-				case TableModelEvent.INSERT:
-					for (int i = firstRow; i <= lastRow; i++) {
-						System.out.println(i);
-					}
-					break;
-				case TableModelEvent.UPDATE:
-					if (firstRow == TableModelEvent.HEADER_ROW) {
-						if (index == TableModelEvent.ALL_COLUMNS) {
-							System.out.println("A column was added");
-						} else {
-							System.out.println(index + "in header changed");
-						}
-					} else {
-						for (int i = firstRow; i <= lastRow; i++) {
-							if (index == TableModelEvent.ALL_COLUMNS) {
-								System.out.println("All columns have changed");
-							} else {
-								
-								Driver d = drivers.getDriver(firstRow);
-							
-								drivers.setDriver(firstRow, updatePrePlan(d,index,firstRow));
-								System.err.println(drivers.getDriver(firstRow).toString());
-							}
-						}
-					}
-					break;
-				case TableModelEvent.DELETE:
-					for (int i = firstRow; i <= lastRow; i++) {
-						System.out.println(i);
-					}
-					break;
-				}
-			}
-		};
-		dView.getTableModel().addTableModelListener(tableModelListener);
+		dView.getTable().addMouseListener(new myTableMenuListenerNew(dView.getTable(),dView.getPopUpMenu()));
+		dView.getTableModel().addTableModelListener(new myTableClickListener(drivers, dView));
+		dView.getPopUpMenu().getMenuItemDayOff().addActionListener(new myTableMenuListener(dView.getTable()));
+		dView.getPopUpMenu().getMenuItemPreferOff().addActionListener(new myTableMenuListener(dView.getTable()));
+		dView.getPopUpMenu().getMenuItemPreferWork().addActionListener(new myTableMenuListener(dView.getTable()));
 	}
 	
-	public Driver updatePrePlan(Driver d, int column,int row){
-		int value = Integer.valueOf((String) dView.getTableModel().getValueAt(row, column)) ;
-		d.setPrePlanAtPosition(column-1, value);
-		return d;
-	}
+	
 	
 }

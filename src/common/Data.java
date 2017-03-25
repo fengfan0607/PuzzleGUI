@@ -16,6 +16,12 @@ public interface Data {
 	public static int w5 = -10;
 	public static int w6 = -8;
 	public static int w7 = 5;
+	
+	//table pop menu name
+	
+	public static String menuItemDayOffName = "Day Off";
+	public static String menuItemPreferOffName = "Prefer Off";
+	public static String menuItemPreferWorkName = "Prefer Work";
 
 	// test data
 //	public static int[][] DriverBoard = {
