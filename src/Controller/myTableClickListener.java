@@ -43,13 +43,9 @@ public class myTableClickListener implements TableModelListener{
 						System.out.println("All columns have changed");
 					} else {
 						
-						Driver d = drivers.getDriver(firstRow);
-					
-						drivers.setDriver(firstRow, updatePrePlan(d,index,firstRow));
+//						Driver d = drivers.getDriver(firstRow);
+//						drivers.setDriver(firstRow, updatePrePlan(d,index,firstRow));
 						System.err.println(drivers.getDriver(firstRow).toString());
-//						TableCellRenderer tableCellRenderer =  dView.getTable().getCellRenderer(firstRow, index);
-//						Component component= dView.getTable().prepareRenderer(tableCellRenderer, firstRow, index);
-//						component.setBackground(Color.gray);
 					}
 				}
 			}

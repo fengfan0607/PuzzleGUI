@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.Action;
 import javax.swing.JMenuItem;
@@ -14,44 +16,81 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.text.TabableView;
 
-import Components.MyCellRenderer;
+import Components.BackgroundCellRenderer;
+import Model.Driver;
+import Model.Drivers;
 import common.Data;
 
 public class myTableMenuListener implements ActionListener,Data {
 	
 	JTable table ; 
 //	JMenuItem item;
-	public myTableMenuListener(JTable table) {
+	BackgroundCellRenderer renderer;
+	Drivers drivers;
+	public myTableMenuListener(JTable table, Drivers d) {
 		// TODO Auto-generated constructor stub
 		this.table = table;
-//		this.item = menu;
+		this.drivers = d;
 	}
 	
 	public void actionPerformed(ActionEvent event) {	
 		JMenuItem menu = (JMenuItem) event.getSource();
 //		System.err.println(menu.i);
 		if (menu.getName()==menuItemPreferOffName) {
-			MyCellRenderer mcr = new MyCellRenderer();
+			BackgroundCellRenderer renderer = new BackgroundCellRenderer();
 			int col = table.getSelectedColumn();
 			int row = table.getSelectedRow();
-			TableCellRenderer tableCellRenderer = table.getCellRenderer(row, col);
-			Component component= table.prepareRenderer(tableCellRenderer, row, col);
-			component.setBackground(Color.gray);
-			System.err.println(row+","+ col + "menu click prefer off");
-//			table.getColumnModel().getColumn(x).setCellRenderer(mcr);
-//			System.err.println(table.getSelectedRow()+" ," + table.getSelectedColumn()+"menu click prefer off");
+			if(table.isCellSelected(row, col)){
+				renderer = (BackgroundCellRenderer) table.getCellRenderer(row, col);
+				renderer.setBackgroundColour(row, col, Color.gray);
+				updateDriver(row, col, 2);
+				if(col%2==0){
+					renderer.setBackgroundColour(row, col-1, Color.gray);
+					updateDriver(row, col-1, 2);
+				}else{
+					renderer.setBackgroundColour(row, col+1, Color.gray);
+					updateDriver(row, col+1, 2);
+				}
+				
+			}
 		} else if (menu.getName() == menuItemDayOffName) {
-			int x = table.getSelectedColumn();
-			int y = table.getSelectedRow();
-			System.err.println(y+","+ x + "menu click prefer off");
-//			System.err.println(table.getSelectedRow() +" ," +table.getSelectedColumn()+"menu click day off");
+			int col = table.getSelectedColumn();
+			int row = table.getSelectedRow();
+			if(table.isCellSelected(row, col)){
+				renderer = (BackgroundCellRenderer) table.getCellRenderer(row, col);
+				renderer.setBackgroundColour(row, col, Color.BLACK);
+				updateDriver(row, col, 1);
+				if(col%2==0){
+					renderer.setBackgroundColour(row, col-1, Color.BLACK);
+					updateDriver(row, col-1, 1);
+				}else{
+					renderer.setBackgroundColour(row, col+1, Color.BLACK);
+					updateDriver(row, col+1, 1);
+				}
+				
+			}
 		} else if (menu.getName() == menuItemPreferWorkName) {
-			int x = table.getSelectedColumn();
-			int y = table.getSelectedRow();
-			System.err.println(y+","+ x + "menu click prefer off");
-//			System.err.println(table.getSelectedRow() +" ,"+ table.getSelectedColumn()+"menu click prefer work");
+			int col = table.getSelectedColumn();
+			int row = table.getSelectedRow();
+			if(table.isCellSelected(row, col)){
+				renderer = (BackgroundCellRenderer) table.getCellRenderer(row, col);
+				renderer.setBackgroundColour(row, col, Color.YELLOW);
+				updateDriver(row, col, 4);
+			}
 		}
 	}
+	
+    public void updateDriver(int row, int col,int value){
+    	Driver d = drivers.getDriver(row);
+		drivers.setDriver(row, updatePrePlan(d,col,row,value));
+		System.err.println(drivers.getDriver(row).toString());
+    }
+    public Driver updatePrePlan(Driver d, int column,int row,int value){
+		d.setPrePlanAtPosition(column-1, value);
+		return d;
+	}
+        
+    }
 
 
-}
+

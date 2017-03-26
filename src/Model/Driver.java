@@ -50,6 +50,12 @@ public class Driver extends Observable implements Data {
 		this.postPlan = postPlan;
 	}
 	public String toString(){
+		for(int i=0;i<prePlan.length;i++){
+			if(prePlan[i]==0){
+				prePlan[i]=3;
+			}
+		}
+			
 		return "driver " + name +" :  "+ Arrays.toString(prePlan);
 	}
 

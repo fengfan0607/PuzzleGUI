@@ -12,17 +12,22 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
 public class MyTableModel extends AbstractTableModel {
-
 	
-	private String[] columnNames = {"Driver", "Day1","Day1", "Day2","Day2", "Day3","Day3", "Day4","Day4", "Day5","Day5", "Day6", "Day6","Day7","Day7","Day8","Day8","Day9","Day9", "Day10","Day10", "Day11","Day11", "Day12","Day12", "Day13","Day13", "Day14", "Day14"};
-	private Vector data = new Vector();
-
-	public final Object[] longValues = {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" };
-
-//	private String[] columnNames = {"Driver", "Day1","Day1", "Day2","Day2", "Day3","Day3", "Day4","Day4", "Day5","Day5", "Day6", "Day6","Day7","Day7","Day8","Day8","Day9","Day9"};
+	private String[] columnNames;
+	public final Object[] longValues;
+	private Vector data;
+	public MyTableModel(String[] columnNames,Object[] longValues) {
+		// TODO Auto-generated constructor stub
+		this.columnNames = columnNames;
+		this.longValues = longValues;
+		data = new Vector<>();
+	}
+	
+//	private String[] columnNames = {"Driver", "Day1","Day1", "Day2","Day2", "Day3","Day3", "Day4","Day4", "Day5","Day5", "Day6", "Day6","Day7","Day7","Day8","Day8","Day9","Day9", "Day10","Day10", "Day11","Day11", "Day12","Day12", "Day13","Day13", "Day14", "Day14"};
 //	private Vector data = new Vector();
 //
-//	public final Object[] longValues = {"", "", "","", "", "","", "", "","", "", "","", "", "","", "", "","" };
+//	public final Object[] longValues = {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" };
+
 
 	@Override
 	public int getColumnCount() {
@@ -54,11 +59,6 @@ public class MyTableModel extends AbstractTableModel {
 
 	public boolean isCellEditable(int row, int col) {
 		return true;
-		// if (4 == col) {
-		// return true;
-		// } else {
-		// return false;
-		// }
 	}
 
 	public void insertData(Object[] values) {

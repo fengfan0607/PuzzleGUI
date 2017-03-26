@@ -22,11 +22,10 @@ public class driverController {
 	}
 	
 	public void control() {
-		dView.getTable().addMouseListener(new myTableMenuListenerNew(dView.getTable(),dView.getPopUpMenu()));
 		dView.getTableModel().addTableModelListener(new myTableClickListener(drivers, dView));
-		dView.getPopUpMenu().getMenuItemDayOff().addActionListener(new myTableMenuListener(dView.getTable()));
-		dView.getPopUpMenu().getMenuItemPreferOff().addActionListener(new myTableMenuListener(dView.getTable()));
-		dView.getPopUpMenu().getMenuItemPreferWork().addActionListener(new myTableMenuListener(dView.getTable()));
+		dView.getPopUpMenu().getMenuItemDayOff().addActionListener(new myTableMenuListener(dView.getTable(),drivers));
+		dView.getPopUpMenu().getMenuItemPreferOff().addActionListener(new myTableMenuListener(dView.getTable(),drivers));
+		dView.getPopUpMenu().getMenuItemPreferWork().addActionListener(new myTableMenuListener(dView.getTable(),drivers));
 	}
 	
 	

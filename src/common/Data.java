@@ -22,7 +22,10 @@ public interface Data {
 	public static String menuItemDayOffName = "Day Off";
 	public static String menuItemPreferOffName = "Prefer Off";
 	public static String menuItemPreferWorkName = "Prefer Work";
-
+	
+	//table sttings
+	
+	public static final int rowHeight=30;
 	// test data
 //	public static int[][] DriverBoard = {
 //			{ 2, 2, 3, 3, 1, 1, 1, 1, 3, 3, 2, 2, 2, 2, 2, 2, 4, 3, 1, 1, 1, 1, 3, 3, 4, 3, 3, 3 },
