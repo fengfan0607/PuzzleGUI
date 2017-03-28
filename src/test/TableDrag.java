@@ -38,11 +38,18 @@ public void dragGestureRecognized(DragGestureEvent event)
 TableModel tableModel = (TableModel) tb1.getModel();
 int row = tb1.getSelectedRow(); 
 int col = tb1.getSelectedColumn(); 
-String s = (String)tableModel.getValueAt(row,col);
-Transferable transferable = (Transferable) new DataFlavor(s);
-event.startDrag(
-DragSource.DefaultCopyDrop,
-transferable);}
+
+try {
+	String s = (String)tableModel.getValueAt(row,col);
+	Transferable transferable = (Transferable) new DataFlavor(s);
+	event.startDrag(
+			DragSource.DefaultCopyDrop,
+			transferable);
+} catch (ClassNotFoundException e) {
+	// TODO Auto-generated catch block
+	e.printStackTrace();
+}
+}
 });	
 
 box.add(new JLabel("拖拽目标"));	String[][] tableDatas2 = {new String[]{"",""},new String[]{"",""}};

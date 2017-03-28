@@ -32,25 +32,27 @@ public class TableColorTest {
         final JColorChooser colorChooser = new JColorChooser();
         
         String[] columns = {"A", "B", "C"};
-        String[][] data = { {"1", "2", "3"}, {"4", "5", "6"} };
+        Object[][] data = { {"1", "2", "3"}, {"4", "5", "6"},{"4", "5", "6"},{"4", "5", "6"},{"4", "5", "6"} };
         JTable table = new JTable(data, columns) {
-            public TableCellRenderer getCellRenderer(int row, int col) {
-                return renderer;
-            }
+//            public TableCellRenderer getCellRenderer(int row, int col) {
+//                return renderer;
+//            }
         };
 
         final JFrame frame = new JFrame("JTable Cell Colour App");
         frame.getContentPane().add(new JScrollPane(table));
         frame.setSize(200, 200);
-        
+        table.setDefaultRenderer(Object.class, renderer);
         table.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent event) {
                 JTable table = (JTable) event.getSource();
                 int row = table.rowAtPoint(event.getPoint());
                 int col = table.columnAtPoint(event.getPoint());
+//                table.getColumnModel().getColumn(col).setCellRenderer(renderer);
                 Color newColour = 
                     JColorChooser.showDialog(frame, "Pick a Colour!", Color.WHITE);
                 renderer.setBackgroundColour(row, col, newColour);
+                table.getColumnModel().getColumn(col).setCellRenderer(null);
             }
         });
 

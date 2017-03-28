@@ -8,9 +8,7 @@ import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragGestureListener;
@@ -30,7 +28,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.TransferHandler;
 import javax.swing.UIManager;
-import javax.swing.TransferHandler.TransferSupport;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -41,7 +38,6 @@ import javax.swing.table.TableColumnModel;
 import Components.ColumnGroup;
 import Components.GroupableTableHeader;
 import Components.MyTableModel;
-import Components.TransferableImage;
 
 public class lineView extends JPanel implements Data{
 	JTable table;
@@ -73,28 +69,7 @@ public class lineView extends JPanel implements Data{
 		iconSun =readImage("sun.png");
 		iconMoon =readImage("moon.jpg");
 		insertData();
-//		insertIcon();
-		groupHeader();
-		DragSource dragSource = DragSource.getDefaultDragSource();
-		dragSource.createDefaultDragGestureRecognizer(table,
-		DnDConstants.ACTION_COPY_OR_MOVE, new DragGestureListener()
-		{
-		public void dragGestureRecognized(DragGestureEvent event)
-		{
-		//当前选择中单元格的内容
-		int row = table.getSelectedRow(); 
-		int col = table.getSelectedColumn(); 
-		ImageIcon imageicon = (ImageIcon)tableModel.getValueAt(row,col);
-		Image image =  imageicon.getImage();
-		BufferedImage bimage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-		JLabel label = new JLabel();
-		label.setIcon(imageicon);
-		Transferable transferable = new TransferableImage(bimage);
-		event.startDrag(
-		DragSource.DefaultCopyDrop,
-		transferable);
-			}
-		});	
+		groupHeader();		
 		JScrollPane scrollPane = new JScrollPane(table);
 		add(scrollPane);
 	}
