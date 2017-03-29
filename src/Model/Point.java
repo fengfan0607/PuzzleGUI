@@ -59,4 +59,13 @@ public class Point extends Observable implements Data {
 	private int earlyAfterLateShift;
 	private int consevutiveLateShifts;
 	private int deviationTargeLateShift;
+	private int dayOffPreference;
+
+	public int getDayOffPreference() {
+		return dayOffPreference;
+	}
+
+	public void setDayOffPreference(int dayOffPreference) {
+		this.dayOffPreference = dayOffPreference;
+	}
 }

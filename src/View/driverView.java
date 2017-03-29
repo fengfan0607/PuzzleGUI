@@ -53,114 +53,73 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
-import Components.BackgroundCellRenderer;
 import Components.ColumnGroup;
 import Components.GroupableTableHeader;
 import Components.GroupableTableHeaderUI;
-import Components.ImageCellRendere;
+import Components.JLabelRenderer;
 import Components.MyTableModel;
 import Components.TablePopUpMenu;
-import Components.TransferableImage;
 import Controller.myTableClickListener;
-import Controller.myTableMouseListener;
 import common.Data;
 
 public class driverView extends JPanel implements Data {
 	JTable table;
 	MyTableModel tableModel;
 	TablePopUpMenu popUpMenu;
-	BackgroundCellRenderer renderer1;
-	ImageCellRendere renderer2;
 	String[] columnNames;
 	Object[] longValues;
 	boolean flag = false;
+
 	public driverView() {
 		super(new GridLayout(1, 0));
-		renderer1 = new BackgroundCellRenderer();
-		renderer2 = new ImageCellRendere();
-		table = new JTable(){
+		table = new JTable() {
 			protected JTableHeader createDefaultTableHeader() {
-				  return new GroupableTableHeader(columnModel);
-		      }
-			
-			@Override
-			public TableCellRenderer getCellRenderer(int row, int column) {
-				// TODO Auto-generated method stub
-				return renderer1;
+				return new GroupableTableHeader(columnModel);
 			}
+
 		};
 		columnNames = new String[] { "Driver", "Day1", "Day1", "Day2", "Day2", "Day3", "Day3", "Day4", "Day4", "Day5",
 				"Day5", "Day6", "Day6", "Day7", "Day7", "Day8", "Day8", "Day9", "Day9", "Day10", "Day10", "Day11",
 				"Day11", "Day12", "Day12", "Day13", "Day13", "Day14", "Day14" };
-		longValues = new Object[] { "",new ImageIcon(), new ImageIcon(), new ImageIcon(), new ImageIcon(), new ImageIcon(), new ImageIcon(), new ImageIcon(), new ImageIcon(), new ImageIcon(),new ImageIcon(), new ImageIcon(), new ImageIcon(), new ImageIcon(), new ImageIcon(), new ImageIcon(), new ImageIcon(), new ImageIcon(), new ImageIcon(),
-				new ImageIcon(), new ImageIcon(), new ImageIcon(), new ImageIcon(), new ImageIcon(), new ImageIcon(),new ImageIcon(), new ImageIcon(), new ImageIcon(), new ImageIcon() };
+		longValues = new Object[] { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+				"", "", "", "", "", "", "", "" };
 
 		tableModel = new MyTableModel(columnNames, longValues);
 		table.setModel(tableModel);
-		table.setDefaultRenderer(Object.class, renderer1);
 		table.setFillsViewportHeight(true);
 		Color color = UIManager.getColor("Table.gridColor");
-		MatteBorder border = new MatteBorder(1, 1, 0, 0, color);
-		table.setBorder(border);
+		MatteBorder border = new MatteBorder(1, 1, 1, 1, color);
+		// table.setBorder(border);
+		table.setGridColor(Color.BLACK);
+		table.setDefaultRenderer(Object.class, new JLabelRenderer());
 		table.setCellSelectionEnabled(true);
-//		table.setDefaultRenderer(Object.class, renderer2);
 		insertData();
 		groupHeader();
-		popUpMenu = new TablePopUpMenu();
-		table.setComponentPopupMenu(popUpMenu);
 		table.setRowHeight(rowHeight);
-		insertIcon();
 		JScrollPane scrollPane = new JScrollPane(table);
-		// ***************************************************
-		// table.addMouseListener(new myTableMouseListener(renderer));
-		// ***********************************************
 		this.add(scrollPane);
-		
 	}
-
-	public TablePopUpMenu getPopUpMenu() {
-		return popUpMenu;
-	}
-
-	public void setPopUpMenu(TablePopUpMenu popUpMenu) {
-		this.popUpMenu = popUpMenu;
-	}
-
 	public void insertData() {
-//		ImageIcon iconSun =readImage("sun.png");
-//		ImageIcon iconMoon =readImage("moon.jpg");
-//		for (int i = 0; i < numOfDrivers; i++) {
-//			Object[] values = new Object[numOfShifts + 1];	
-//			for (int j = 0; j <= numOfShifts; j++) {
-//				if (j == 0) {
-//					values[j] ="          " + (i+1);
-//				} else {
-//					if(j%2==1){
-//						values[j] = iconSun;
-//					}else{
-//						values[j] = iconMoon;
-//					}
-//					
-//				}
-//			}
-//			tableModel.insertData(values);
-//		}
 		for (int i = 0; i < numOfDrivers; i++) {
 			Object[] values = new Object[numOfShifts + 1];
 			for (int j = 0; j <= numOfShifts; j++) {
 				if (j == 0) {
-					values[j] = "          " + (char) (65 + i);
+					values[j] = "  " + (char) (65 + i);
 				} else {
-					values[j] = "";
+					JLabel label = new JLabel();
+					label.setBorder(new MatteBorder(1, 1, 1, 1, Color.BLACK));
+					values[j] = label;
 				}
 			}
 			tableModel.insertData(values);
 		}
 	}
-	public void insertIcon(){
+
+	public void insertIcon() {
 		ImageIcon testIcon = readImage("sun.png");
 		tableModel.setValueAt("line1", 1, 1);
 	}
+
 	public MyTableModel getTableModel() {
 		return tableModel;
 	}
@@ -219,5 +178,4 @@ public class driverView extends JPanel implements Data {
 		}
 	}
 
-	
 }

@@ -21,8 +21,8 @@ public class textView extends JPanel implements Observer{
 	@Override
 	public void update(Observable o, Object arg) {
 		if(o instanceof Driver){
-			System.err.println(o.toString());
-			textArea.append(o.toString()+"\n");
+			textArea.append(((Driver) o).toStringPrePlan()+"\n");
+			textArea.append(((Driver) o).toStringPostPlan()+"\n");
 		}
 	}
 }

@@ -38,7 +38,7 @@ public class MyTableModel extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int row, int col) {
-		return  ((Vector) data.get(row)).get(col);
+		return ((Vector) data.get(row)).get(col);
 	}
 
 	public String getColumnName(int col) {
@@ -46,10 +46,8 @@ public class MyTableModel extends AbstractTableModel {
 	}
 
 	public Class getColumnClass(int c) {
-//		return ImageIcon.class;
-		if(c>=1){
-			return ImageIcon.class;
-		}
+		// return ImageIcon.class;
+		// return JLabel.class;
 		return getValueAt(0, c).getClass();
 	}
 

@@ -24,101 +24,87 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.text.TabableView;
 
-import Components.BackgroundCellRenderer;
-import Components.ImageCellRendere;
+import Components.JLabelRenderer;
 import Model.Driver;
 import Model.Drivers;
 import common.Data;
 import test.Renderer;
 
-public class myTableMenuListener implements ActionListener,Data {
-	
-	JTable table ; 
-//	JMenuItem item;
-	BackgroundCellRenderer renderer;
+public class myTableMenuListener implements ActionListener, Data {
+
+	JTable table;
+	// JMenuItem item;
 	Drivers drivers;
+
 	public myTableMenuListener(JTable table, Drivers d) {
 		// TODO Auto-generated constructor stub
 		this.table = table;
 		this.drivers = d;
 	}
-	
-//	public void actionPerformed(ActionEvent event) {	
-//		JMenuItem menu = (JMenuItem) event.getSource();
-//		if (menu.getName()==menuItemPreferOffName) {
-//			int col = table.getSelectedColumn();
-//			int row = table.getSelectedRow();
-//			if(table.isCellSelected(row, col)){
-//				renderer = (BackgroundCellRenderer) table.getCellRenderer(row, col);
-//				renderer.setBackgroundColour(row, col, Color.gray);
-//				updateDriver(row, col, 2);
-//				if(col%2==0){
-//					renderer.setBackgroundColour(row, col-1, Color.gray);
-//					updateDriver(row, col-1, 2);
-//				}else{
-//					renderer.setBackgroundColour(row, col+1, Color.gray);
-//					updateDriver(row, col+1, 2);
-//				}
-//				
-//			}
-//		} else if (menu.getName() == menuItemDayOffName) {
-//			int col = table.getSelectedColumn();
-//			int row = table.getSelectedRow();
-//			if(table.isCellSelected(row, col)){
-//				renderer = (BackgroundCellRenderer) table.getCellRenderer(row, col);
-//				renderer.setBackgroundColour(row, col, Color.BLACK);
-//				updateDriver(row, col, 1);
-//				if(col%2==0){
-//					renderer.setBackgroundColour(row, col-1, Color.BLACK);
-//					updateDriver(row, col-1, 1);
-//				}else{
-//					renderer.setBackgroundColour(row, col+1, Color.BLACK);
-//					updateDriver(row, col+1, 1);
-//				}
-//				
-//			}
-//		} else if (menu.getName() == menuItemPreferWorkName) {
-//			int col = table.getSelectedColumn();
-//			int row = table.getSelectedRow();
-//			if(table.isCellSelected(row, col)){
-//				renderer = (BackgroundCellRenderer) table.getCellRenderer(row, col);
-//				renderer.setBackgroundColour(row, col, Color.YELLOW);
-//				updateDriver(row, col, 4);
-//			}
-//		}
-//	}
-	public void actionPerformed(ActionEvent event) {	
+
+	public void actionPerformed(ActionEvent event) {
 		JMenuItem menu = (JMenuItem) event.getSource();
-		if (menu.getName()==menuItemPreferOffName) {
+		if (menu.getName() == menuItemPreferOffName) {
 			int col = table.getSelectedColumn();
 			int row = table.getSelectedRow();
-			insertLabel(row, col);
+			if (table.isCellSelected(row, col)) {
+				setColor(row, col, Color.gray);
+				updateDriver(row, col, 2);
+				if (col % 2 == 0) {
+					setColor(row, col - 1, Color.gray);
+					updateDriver(row, col - 1, 2);
+				} else {
+					setColor(row, col + 1, Color.gray);
+					updateDriver(row, col + 1, 2);
+				}
+
+			}
 		} else if (menu.getName() == menuItemDayOffName) {
 			int col = table.getSelectedColumn();
 			int row = table.getSelectedRow();
-			insertLabel(row, col);
+			if (table.isCellSelected(row, col)) {
+				setColor(row, col, Color.black);
+				updateDriver(row, col, 1);
+				if (col % 2 == 0) {
+					setColor(row, col - 1, Color.black);
+					updateDriver(row, col - 1, 1);
+				} else {
+					setColor(row, col + 1, Color.black);
+					updateDriver(row, col + 1, 1);
+				}
+
+			}
 		} else if (menu.getName() == menuItemPreferWorkName) {
 			int col = table.getSelectedColumn();
 			int row = table.getSelectedRow();
-			insertLabel(row, col);
+			if (table.isCellSelected(row, col)) {
+				setColor(row, col, Color.YELLOW);
+				insertIcon(row, col);
+				updateDriver(row, col, 4);
+			}
 		}
 	}
-	public void insertLabel(int row,int col){
-		Icon image = readImage("sun.png");
-		JLabel label = new JLabel(image);
-//		label.setIcon(readImage("sun.png"));
+
+	public void setColor(int row, int col, Color color) {
+		JLabel label = new JLabel();
 		label.setOpaque(true);
-		label.setBackground(Color.RED);
-		
-		table.getColumnModel().getColumn(col).setCellRenderer(new Renderer());
+		label.setBackground(color);
+		table.getColumnModel().getColumn(col).setCellRenderer(new JLabelRenderer());
 		table.setValueAt(label, row, col);
-		
 	}
-	public void insertIcon(int row,int col){
+
+	public void insertIcon(int row, int col) {
 		ImageIcon testIcon = readImage("sun.png");
-//		table.getColumnModel().getColumn(col).setCellRenderer(new ImageCellRendere());
-		table.setValueAt(testIcon, row, col);
+		JLabel label = (JLabel) table.getValueAt(row, col);
+		Color color = label.getBackground();
+		label = new JLabel(testIcon);
+		label.setOpaque(true);
+		label.setBackground(color);
+		// table.getColumnModel().getColumn(col).setCellRenderer(new
+		// ImageCellRendere());
+		table.setValueAt(label, row, col);
 	}
+
 	public ImageIcon readImage(String fileNmes) {
 		ImageIcon image = null;
 		BufferedImage img = null;
@@ -134,17 +120,16 @@ public class myTableMenuListener implements ActionListener,Data {
 
 		return image;
 	}
-    public void updateDriver(int row, int col,int value){
-    	Driver d = drivers.getDriver(row);
-		drivers.setDriver(row, updatePrePlan(d,col,row,value));
+
+	public void updateDriver(int row, int col, int value) {
+		Driver d = drivers.getDriver(row);
+		drivers.setDriver(row, updatePrePlan(d, col, row, value));
 		System.err.println(drivers.getDriver(row).toString());
-    }
-    public Driver updatePrePlan(Driver d, int column,int row,int value){
-		d.setPrePlanAtPosition(column-1, value);
+	}
+
+	public Driver updatePrePlan(Driver d, int column, int row, int value) {
+		d.setPrePlanAtPosition(column - 1, value);
 		return d;
 	}
-        
-    }
 
-
-
+}
