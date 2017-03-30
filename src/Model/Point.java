@@ -11,6 +11,8 @@ public class Point extends Observable implements Data {
 
 	public void setShiftPreference(int shiftPreference) {
 		this.shiftPreference = shiftPreference;
+		setChanged();
+		notifyObservers();
 	}
 
 	public int getLongRest() {
@@ -19,6 +21,8 @@ public class Point extends Observable implements Data {
 
 	public void setLongRest(int longRest) {
 		this.longRest = longRest;
+		setChanged();
+		notifyObservers();
 	}
 
 	public int getUnassignedShifts() {
@@ -27,14 +31,19 @@ public class Point extends Observable implements Data {
 
 	public void setUnassignedShifts(int unassignedShifts) {
 		this.unassignedShifts = unassignedShifts;
+		setChanged();
+		notifyObservers();
 	}
 
 	public int getEarlyAfterLateShift() {
 		return earlyAfterLateShift;
+
 	}
 
 	public void setEarlyAfterLateShift(int earlyAfterLateShift) {
 		this.earlyAfterLateShift = earlyAfterLateShift;
+		setChanged();
+		notifyObservers();
 	}
 
 	public int getConsevutiveLateShifts() {
@@ -43,6 +52,8 @@ public class Point extends Observable implements Data {
 
 	public void setConsevutiveLateShifts(int consevutiveLateShifts) {
 		this.consevutiveLateShifts = consevutiveLateShifts;
+		setChanged();
+		notifyObservers();
 	}
 
 	public int getDeviationTargeLateShift() {
@@ -51,6 +62,8 @@ public class Point extends Observable implements Data {
 
 	public void setDeviationTargeLateShift(int deviationTargeLateShift) {
 		this.deviationTargeLateShift = deviationTargeLateShift;
+		setChanged();
+		notifyObservers();
 	}
 
 	private int shiftPreference;
@@ -60,6 +73,16 @@ public class Point extends Observable implements Data {
 	private int consevutiveLateShifts;
 	private int deviationTargeLateShift;
 	private int dayOffPreference;
+	private int totalPoints;
+	public int getTotalPoints() {
+		return totalPoints;
+	}
+
+	public void setTotalPoints(int totalPoints) {
+		this.totalPoints = totalPoints;
+		setChanged();
+		notifyObservers();
+	}
 
 	public int getDayOffPreference() {
 		return dayOffPreference;

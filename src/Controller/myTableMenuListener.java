@@ -79,7 +79,6 @@ public class myTableMenuListener implements ActionListener, Data {
 			int row = table.getSelectedRow();
 			if (table.isCellSelected(row, col)) {
 				setColor(row, col, Color.YELLOW);
-				insertIcon(row, col);
 				updateDriver(row, col, 4);
 			}
 		}

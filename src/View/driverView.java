@@ -25,6 +25,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.util.Arrays;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
@@ -60,9 +63,10 @@ import Components.JLabelRenderer;
 import Components.MyTableModel;
 import Components.TablePopUpMenu;
 import Controller.myTableClickListener;
+import Model.Driver;
 import common.Data;
 
-public class driverView extends JPanel implements Data {
+public class driverView extends JPanel implements Observer, Data {
 	JTable table;
 	MyTableModel tableModel;
 	TablePopUpMenu popUpMenu;
@@ -99,6 +103,7 @@ public class driverView extends JPanel implements Data {
 		JScrollPane scrollPane = new JScrollPane(table);
 		this.add(scrollPane);
 	}
+
 	public void insertData() {
 		for (int i = 0; i < numOfDrivers; i++) {
 			Object[] values = new Object[numOfShifts + 1];
@@ -176,6 +181,24 @@ public class driverView extends JPanel implements Data {
 			comp.setBorder(border);
 			return comp;
 		}
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		if (o instanceof Driver) {
+			int[] lines = ((Driver) o).getDriveLines();
+			String string = "";
+			for (int i = 0; i < numOfLines; i++) {
+				if (lines[i] != 0) {
+					string += (i + 1) + ",";
+				}
+			}
+			String driverName = ((Driver) o).getName();
+			int rowIndex = (int) (((Driver) o).getName().charAt(0)) - 65;
+			table.getModel().setValueAt(driverName + "(" + string + ")", rowIndex, 0);
+		}
+
 	}
 
 }

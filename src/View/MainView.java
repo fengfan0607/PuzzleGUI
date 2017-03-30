@@ -9,11 +9,13 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import Controller.calculation;
 import Controller.driverController;
 import Model.Driver;
 import Model.Drivers;
 import Model.Line;
 import Model.Lines;
+import Model.Point;
 import common.Data;
 
 public class MainView extends JFrame implements Data {
@@ -24,6 +26,10 @@ public class MainView extends JFrame implements Data {
 	GridBagLayout gbl = new GridBagLayout();
 	pointsView pView;
 	toolBarView tBarView;
+	private calculation calculation;
+	private Point point;
+
+	private driverMapLineView dLineView;
 
 	// Drivers drivers;
 	public MainView() {
@@ -34,18 +40,21 @@ public class MainView extends JFrame implements Data {
 		lView = new lineView();
 		pView = new pointsView();
 		tBarView = new toolBarView();
+		dLineView = new driverMapLineView();
 		this.pack();
-		dController = new driverController(createDrivers(), dView, createLines(), tBarView, lView);
+		point = createPoint();
+		dController = new driverController(createDrivers(), dView, createLines(), tBarView, lView, point, dLineView);
 		getContentPane().add(tBarView);
 		getContentPane().add(pView);
 		getContentPane().add(lView);
 		getContentPane().add(dView);
-		getContentPane().add(tView);
-		makeConstraints(gbl, tBarView, 5, 1, 0, 0, 1, 0.2);
-		makeConstraints(gbl, pView, 1, 7, 0, 1, 0, 1);
-		makeConstraints(gbl, lView, 4, 1, 1, 1, 1, 0.5);
-		makeConstraints(gbl, dView, 4, 4, 1, 2, 1, 1);
-		makeConstraints(gbl, tView, 4, 1, 1, 6, 1, 0);
+		getContentPane().add(dLineView);
+		// getContentPane().add(tView);
+		makeConstraints(gbl, tBarView,  8, 1, 0, 0, 1, 0.1);
+		makeConstraints(gbl, dLineView, 1, 2, 0, 1, 0, 0.2);
+		makeConstraints(gbl, pView, 	1, 5, 0, 2, 0, 1);
+		makeConstraints(gbl, lView, 	7, 1, 1, 1, 1, 0.2);
+		makeConstraints(gbl, dView, 	7, 4, 1, 3, 1, 0.7);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1200, 600);
 		setLocation(300, 500);
@@ -53,15 +62,24 @@ public class MainView extends JFrame implements Data {
 		dController.control();
 	}
 
+	public Point createPoint() {
+		Point point = new Point();
+		point.addObserver(pView);
+		return point;
+
+	}
+
 	public Drivers createDrivers() {
 		Drivers ds = new Drivers();
+		calculation = new calculation(this.point);
 		ds.setAllDrivers(new Driver[numOfDrivers]);
 		for (int i = 0; i < numOfDrivers; i++) {
-			Driver driver = new Driver("" + (char) (65 + i), new int[numOfShifts], new int[numOfShifts]);
-			driver.addObserver(tView);
+			Driver driver = new Driver("" + (char) (65 + i), new int[numOfShifts], new int[numOfShifts],
+					new int[numOfLines]);
+			driver.addObserver(dView);
 			ds.setDriver(i, driver);
 		}
-
+		ds.addObserver(calculation);
 		return ds;
 	}
 

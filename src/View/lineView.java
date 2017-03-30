@@ -5,6 +5,7 @@ import common.Data;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.datatransfer.DataFlavor;
@@ -75,6 +76,10 @@ public class lineView extends JPanel implements Data {
 		insertData();
 		groupHeader();
 		JScrollPane scrollPane = new JScrollPane(table);
+//		Dimension d = table.getSize();
+//		table.setPreferredScrollableViewportSize(new Dimension(d.width, rowHeight * (numOfLines + 1)));
+//		revalidate();
+		table.setFillsViewportHeight(true);
 		add(scrollPane);
 	}
 

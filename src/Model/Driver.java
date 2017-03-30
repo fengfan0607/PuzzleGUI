@@ -9,6 +9,21 @@ public class Driver extends Observable implements Data {
 	private String name;
 	private int[] prePlan;
 	private int[] postPlan;
+	private int[] driveLines;
+
+	public void setDriveLines(int lineNumber) {
+		driveLines[lineNumber] = 1;
+		setChanged();
+		notifyObservers();
+	}
+
+	public int[] getDriveLines() {
+		return driveLines;
+	}
+
+	public void setDriveLines(int[] driveLines) {
+		this.driveLines = driveLines;
+	}
 
 	public int[] getPrePlan() {
 		return prePlan;
@@ -41,11 +56,12 @@ public class Driver extends Observable implements Data {
 		return postPlan;
 	}
 
-	public Driver(String name, int[] prePlan, int[] postPlan) {
+	public Driver(String name, int[] prePlan, int[] postPlan, int[] driveLines) {
 		super();
 		this.name = name;
 		this.prePlan = prePlan;
 		this.postPlan = postPlan;
+		this.driveLines = driveLines;
 	}
 
 	public void setPostPlan(int[] postPlan) {

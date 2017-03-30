@@ -7,7 +7,9 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.border.LineBorder;
 
+import Model.Driver;
 import Model.Drivers;
 import Model.Line;
 import Model.Lines;
@@ -38,13 +40,18 @@ public class myTableMenuUnDoPlanListener implements ActionListener, Data {
 		int col = dView.getTable().getSelectedColumn();
 
 		// undo driver view
-		int undoLineshift = drivers.getDriver(row).getPostPlanAtPosition(col - 1);
+		Driver driver = drivers.getDriver(row);
+		int undoLineshift = driver.getPostPlanAtPosition(col - 1);
+		driver.setPostPlanAtPosition(col - 1, 0);
+		drivers.setDriver(row, driver);
 		JLabel label = (JLabel) dView.getTable().getValueAt(row, col);
 		Color backGound = label.getBackground();
 		ImageIcon icon = (ImageIcon) label.getIcon();
 		JLabel newLabel = new JLabel();
 		newLabel.setBackground(backGound);
+		newLabel.setBorder(new LineBorder(Color.BLACK));
 		dView.getTable().setValueAt(newLabel, row, col);
+
 		// undo lineview
 		Line line = lines.getLine(undoLineshift - 1);
 		System.err.println(line);
@@ -52,7 +59,6 @@ public class myTableMenuUnDoPlanListener implements ActionListener, Data {
 		System.err.println(line);
 		myImageIcon newLineIcon = new myImageIcon(undoLineshift - 1, col, icon.getImage());
 		lView.getTable().setValueAt(newLineIcon, undoLineshift - 1, col);
-
 	}
 
 }
